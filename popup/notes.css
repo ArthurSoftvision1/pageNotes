@@ -1,0 +1,27 @@
+/* Add-on stylization CSS file */
+
+.new-note {
+    width:200px;
+}
+
+.add-note {
+    background-color: red;
+    border:1px solid red;
+    color:white;
+}
+
+.remove{
+    background-color: red;
+    border:1px solid red;
+    color:white;
+}
+
+.delete {
+    background-color: red;
+    border:1px solid red;
+    color:white;
+}
+
+.add-on-title {
+    text-align: center;
+}
