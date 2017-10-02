@@ -1,4 +1,6 @@
-// Add-on functionality
+window.onload = function() {
+  displayCurrentUrl(); // on load call the function to display the current url in the pop-up
+};
 
 var subjectInput = document.querySelector('input'); // select input
 var textAreaInput = document.querySelector('textarea'); // select textarea
@@ -38,6 +40,21 @@ function deleteNoteFromList() {
   browser.storage.local.clear(); // clear all
 }
 
+function displayCurrentUrl() {
+  browser.tabs.query({'active': true, 'currentWindow': true}, function (tabs) { // select all active tabs/current window
+    var url = tabs[0].url; // get the URL
+    console.log(url);
+
+  var urlDiv = document.createElement('div');
+  urlDiv.setAttribute('id', 'show-url');
+  var urlPage = document.getElementById('webpage-url');
+  urlPage.appendChild(urlDiv);
+
+  urlDiv.textContent = url;
+    
+  });
+}
+
 // creates a local storage where the notes are saved
 function createLocalStorage() {
   var gettingAllStorageItems = browser.storage.local.get(); // get all local storage
@@ -45,7 +62,7 @@ function createLocalStorage() {
     var noteKeys = Object.keys(results);
     for (let noteKey of noteKeys) { // store the value and the key in local storage
       var noteValue = results[noteKey];
-      displayNote(noteKey,noteValue);
+      displayNote(noteKey,noteValue); // display the title and body
     }
   }, onError);
 }
@@ -53,6 +70,20 @@ function createLocalStorage() {
 // display the local storage
 function displayLocalStorage() {
   var localStorage =  browser.storage.local.get(); // get all local storage
+   // iei toate cheile din storage , trec prin ele, verific cheia si iau informatia.
+
+   // get the keys and loop in the key list - iterate localStorage
+  //  Object.keys(localStorage).forEach(key => {
+  //   console.log(localStorage.getItem(key));
+  //   displayNote(url);
+  //  });
+
+  Object.keys(localStorage).forEach(key => {
+    if (key.indexOf(tabIdentifier !== -1)) {
+      console.log(localStorage);
+    }
+  });
+   
   localStorage.then(function(e) {
     var localObj = Object.keys(e);
     for (let obj of localObj) {
@@ -99,7 +130,7 @@ function displayNote(title, body) {
     const event = e.target; // set target
     event.parentNode.parentNode.parentNode.removeChild(event.parentNode.parentNode);
     browser.storage.local.remove(title); // remove title from local storage
-  })
+  });
 
   // create new notes
   var newDivNote = document.createElement('div');
@@ -114,5 +145,5 @@ function displayNote(title, body) {
   noteDiv.appendChild(newDivNote);
 
   noteBox.appendChild(noteDiv);
-  newDivNote.style.display = 'none'; 
+  newDivNote.style.display = 'none';  
 }
